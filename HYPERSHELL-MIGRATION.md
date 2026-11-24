@@ -28,11 +28,13 @@ until the gates below are complete.
 
 ## Before rollout
 
-1. Merge [Rehor PR #667](https://github.com/OpenShift-Fleet/rehor/pull/667)
-   (TypeScript preflights) and [PR #668](https://github.com/OpenShift-Fleet/rehor/pull/668)
-   (top-level `env`), then deploy a dispatcher image containing both. Older
-   dispatchers do not read top-level `env` and cannot run the declared
-   preflights.
+1. Deploy a dispatcher image built from the pinned `dev-bot` revision
+   (`6b4f296`, rehor [#679](https://github.com/OpenShift-Fleet/rehor/pull/679))
+   or newer. Rehor #667 (TypeScript preflights) and #668 (top-level `env`) are
+   merged and contained in the pin, along with #674 (schedule evaluation),
+   #678 (Jira intake and screenshot uploads), and #679 (instance env passed to
+   preflights as one unit). Older dispatchers do not read top-level `env` and
+   cannot run the declared preflights.
 2. Wire the OpenAI model route in app-interface: `REHOR_MODEL_PROXY_URL`
    (proxy port 8450) and the gateway token for `REHOR_MODEL_PROXY_TOKEN`.
    This PR contains no secret; the token placeholder must be replaced by the
