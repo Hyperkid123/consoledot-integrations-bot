@@ -1,5 +1,26 @@
 # Consoledot Integrations Instance — Additional Instructions
 
+## Model Tiers
+
+Roles use three `rehor-openai` models. All are declared in
+`opencode-deployment.json` and allowlisted by the model proxy:
+
+- `integrations-coordinator`: `gpt-6.1-sol` for coordination and review.
+- `backend`, `frontend`, `app-interface`, `tooling`: `gpt-6.1-terra` for
+  substantial implementation.
+- `cve`: `gpt-6-luna` for bounded remediation.
+- `rds-upgrade`: `gpt-6.1-sol` for complex multi-stage reasoning.
+
+OpenCode 2.1.2 resolves the primary session from the root model selected by
+`instance.yaml`, so `gpt-6.1-sol` must stay in both `instance.yaml` and the
+coordinator frontmatter. A subagent uses its frontmatter model when the
+subagent tool creates the child session; an explicit `task` model overrides it.
+Do not pass a model on `task` calls without a ticket-specific reason.
+`gpt-6.1-terra` is not in the pinned OpenCode 2.1.2 baked catalog (the runner
+disables catalog fetching), so it depends on the deployment declaration, proxy
+allowlist, and fallback pricing; verify it on a real staging cycle before
+enabling dispatch.
+
 ## Native Subagents
 
 `opencode.json` selects `integrations-coordinator` as the default primary agent

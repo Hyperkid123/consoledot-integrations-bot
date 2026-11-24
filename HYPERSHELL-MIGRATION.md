@@ -9,7 +9,10 @@ until the gates below are complete.
 
 - Profile `instance/integrations-config` selects the OpenCode coordinator
   runtime (`runtime: opencode`, `BOT_EXECUTION_ENGINE: coordinator`) and the
-  `rehor-openai` provider with `gpt-6.1-terra`.
+  `rehor-openai` provider with `gpt-6.1-sol` as the root/coordinator model.
+  Role tiers use `gpt-6.1-sol` for the coordinator and `rds-upgrade`,
+  `gpt-6.1-terra` for `backend`, `frontend`, `app-interface`, and `tooling`,
+  and `gpt-6-luna` for `cve`.
 - Native OpenCode configuration replaces the Claude layout: `AGENTS.md`
   replaces `CLAUDE.md`, subagents live in `.opencode/agents/`, and the provider
   is declared in `opencode-deployment.json` (no secrets; URL and token come
@@ -35,6 +38,15 @@ until the gates below are complete.
    This PR contains no secret; the token placeholder must be replaced by the
    deployment. Add this repository to the dispatcher's
    `AGENT_DISPATCHER_CONFIG_REPOS` in the same GitOps change, not here.
+   Model routing is currently unresolved, not enabled: the stage proxy
+   allowlist already contains `gpt-6.1-sol,gpt-6-luna,gpt-6.1-terra`, but this
+   repository is absent from `AGENT_DISPATCHER_CONFIG_REPOS`, and its
+   app-interface target still runs the legacy template without the model proxy
+   environment. Treat the first successful staging model call as the routing
+   gate. `gpt-6.1-terra` is deployment-declared and proxy-allowlisted but is
+   absent from the pinned OpenCode 2.1.2 baked catalog (catalog fetching is
+   disabled), so it has no native catalog metadata and relies on the
+   checked-in fallback pricing entry.
 3. Verify the `dev-bot` submodule pin builds a compatible runner image and
    promote it. Verify the configured `latest` tag resolves to that image before
    enabling dispatch; the tag can change. The dispatcher checks out the config

@@ -4,7 +4,8 @@ source: jira
 # runtime defaults; native subagents and MCP settings apply only to OpenCode.
 runtime: opencode
 provider: rehor-openai
-model: gpt-6.1-terra
+# OpenCode 2.1.2 applies the runner-selected root model to the primary session.
+model: gpt-6.1-sol
 envs:
   - node
   - go

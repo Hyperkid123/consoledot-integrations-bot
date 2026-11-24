@@ -8,7 +8,7 @@ Focused on ConsoleDot integration services — including [sources-api-go](https:
 
 Uses dev-bot as a git submodule. The submodule ships `Dockerfile.runner` which builds the full bot image and runs instance-specific customization hooks from this repo.
 
-The instance runs the OpenCode coordinator runtime with the `rehor-openai` provider (model `gpt-6.1-terra`) through the shared model proxy. The profile is dispatcher-managed: the agent dispatcher checks out this repository, runs the declared TypeScript preflights, and launches a per-run sandbox from the configured image.
+The instance runs the OpenCode coordinator runtime with the `rehor-openai` provider through the shared model proxy. The coordinator and multi-stage `rds-upgrade` work use `gpt-6.1-sol`; substantial `backend`, `frontend`, `app-interface`, and `tooling` implementation uses `gpt-6.1-terra`; bounded `cve` remediation uses `gpt-6-luna`. The profile is dispatcher-managed: the agent dispatcher checks out this repository, runs the declared TypeScript preflights, and launches a per-run sandbox from the configured image.
 
 ```
 consoledot-integrations-bot/
